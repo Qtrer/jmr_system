@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>职位编辑</title>
+</head>
+<body>
+<form action="{% url 'enterpriseUpdateJobHandler' enterprise.id job.id %}" method="post">
+    {% csrf_token %}
+    {{ job_form }}
+    <button type="submit">Edit</button>
+</form>
+</body>
+</html>
