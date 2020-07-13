@@ -2,22 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>企业详情</title>
+    <title>招聘信息管理</title>
 </head>
 <body>
-Name: {{ enterprise.enterprise_name }}
-<br>
-Address: {{ enterprise.enterprise_address }}
-<br>
-Info: {{ enterprise.enterprise_info }}
-<br>
-Tel: {{ enterprise.enterprise_tel }}
-<br>
-Email: {{ enterprise.enterprise_mail }}
-<br>
-<a href="{% url 'enterpriseUpdate' enterprise.id %}">Edit</a>
-<br>
-Job:
+Jobs:
 <br>
 <ul>
 {% for job in jobs %}
@@ -30,6 +18,6 @@ Job:
 </ul>
 <a href="{% url 'enterpriseAddJob' enterprise.id %}">Add more job</a>
 <br>
-<a href="list">Return to enterprise list</a>
+<a href="{% url 'enterpriseIndex' enterprise.id %}">Return</a>
 </body>
 </html>

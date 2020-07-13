@@ -1,0 +1,88 @@
+body{
+    background-image: url(../images/heart.jpg);
+    background-position: center;
+    background-size:100%;
+    background-repeat: no-repeat;
+}
+
+
+body.login{
+    background-color: white;
+}
+
+.login #header {
+    padding: 5px 5px;
+    width: 30em;
+    height: 1em;
+    margin: auto;
+}
+
+.login #header h1 {
+    font-size: 60px;
+}
+
+.login #content {
+    background: #fff;
+    border: 0.5px solid lightgray;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 30em;
+    height: 15em;
+    min-width: 300px;
+    margin: 100px auto;
+    box-shadow: lightgray 5px 5px 30px 5px
+}
+
+
+
+
+.login #content {
+    padding: 20px 20px 0;
+}
+
+
+.login .form-row {
+    padding: 6px 0px;
+    float: left;
+    width: 100%;
+    border-bottom: none;
+}
+
+.login .form-row label {
+    padding-right: 0.5em;
+    line-height: 2em;
+    font-size: 1em;
+    clear: both;
+    color: #333;
+}
+
+.login .submit-row {
+    clear: both;
+    padding: 1em 0 0 9.4em;
+    margin: 0;
+    border:none;
+    background: none;
+    text-align: left;
+    width: 100%;
+}
+
+
+button {
+    background-color: limegreen;
+    width: 180px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+button label{
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+input {
+    margin-bottom: 20px;
+    width: 100%;
+    height: 20px;
+}
