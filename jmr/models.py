@@ -34,6 +34,7 @@ class Resume(models.Model):
     resume_employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     resume_info = models.CharField(max_length=200, default='info')
     resume_address = models.CharField(max_length=80, default='address')
+    resume_job = models.ManyToManyField(to='Job', through='Jobs_Resumes', through_fields=('resume', 'job'))
 
     def __str__(self):
         return self.resume_employee.employee_name
@@ -47,10 +48,15 @@ class Job(models.Model):
     job_count = models.IntegerField(default=1)
     job_info = models.CharField(max_length=200, default='info')
     job_enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE)
-    job_resume = models.ManyToManyField(Resume, null=True)
+    job_resume = models.ManyToManyField(to='Resume',through='Jobs_Resumes',through_fields=('job', 'resume'))
 
     def __str__(self):
         return self.job_name
 
+class Jobs_Resumes(models.Model):
+    job = models.ForeignKey(to='Job', on_delete=models.CASCADE)
+    resume = models.ForeignKey(to='Resume', on_delete=models.CASCADE)
+    isEmploy = models.BooleanField(default=False)
 
-
+    def __str__(self):
+        return '{}_{}'.format(self.job, self.resume)

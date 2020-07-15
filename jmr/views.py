@@ -35,7 +35,7 @@ def employeeIndex(request, id):
     employee = Employee.objects.get(id=id)
     resume = Resume.objects.get(resume_employee_id=id)
     jobs = Job.objects.all()
-    recommendedJobs = Job.objects.filter(job_major=resume.resume_major, job_degree__lte=resume.resume_degree)
+    recommendedJobs = Job.objects.filter(job_major=resume.resume_major).filter(job_degree__lte=resume.resume_degree)
     context = { 'employee': employee, 'resume': resume, 'jobs': jobs, 'recommendedJobs': recommendedJobs }
     return render(request, 'employee/index-emlpoyee.html', context)
 
@@ -110,7 +110,10 @@ def enterpriseDetail(request, id):
 def enterpriseIndex(request, id):
     enterprise = Enterprise.objects.get(id = id)
     jobs = Job.objects.filter(job_enterprise_id = id)
-    context = { 'enterprise': enterprise, 'jobs': jobs }
+    resumes = Resume.objects.all()
+    for job in jobs:
+        recommendedResumes = Resume.objects.filter(resume_major=job.job_major).filter(resume_degree__gte=job.job_degree)
+    context = { 'enterprise': enterprise, 'jobs': jobs, 'resumes': resumes, 'recommendedResumes': recommendedResumes }
     return render(request, 'enterprise/index-enterprise.html',context)
 
 def enterpriseJobs(request, id):
@@ -225,25 +228,49 @@ def jobDetail(request, id):
     context = { 'job': job }
     return render(request, 'job/detail.html',context)
 
-def jobRecommend(request, id):
-    resume = Resume.objects.get(id=id)
-    resume_degree = resume.resume_degree
-    resume_major = resume.resume_major
-    jobs = Job.objects.filter(job_major=resume_major, job_degree__lte=resume_degree)
-    context = {'jobs': jobs}
-    return render(request, 'job/list.html', context)
+def resumeDetail(request, id):
+    resume = Resume.objects.get(resume_employee_id = id)
+    context = { 'resume': resume }
+    return render(request, 'resume/detail.html',context)
 
-def schoolSpider(request, id):
-    job = Job.objects.get(id=id)
-    if job.job_school == '985':
-        url = 'https://gkcx.eol.cn/school/search?schoolflag=985%E5%B7%A5%E7%A8%8B&fromcoop=bdkp'
-    elif job.job_school == '211':
-        url = 'https://gkcx.eol.cn/school/search?schoolflag=211%E5%B7%A5%E7%A8%8B&fromcoop=bdkp'
-    elif job.job_school == '一本':
-        url = 'https://gkcx.eol.cn/school/search?schoolflag=%E4%B8%80%E6%B5%81%E5%A4%A7%E5%AD%A6%E5%BB%BA%E8%AE%BE%E9%AB%98%E6%A0%A1&fromcoop=bdkp'
-    header = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
-    }
-    school_list = []
+def resumeSend(request, id, jid):
+    resume = Resume.objects.get(resume_employee_id=id)
+    job = Job.objects.get(id=jid)
+    job.job_resume.add(resume)
+    return redirect(reverse('resumeSended', args=(id,)))
 
-    return JsonResponse()
+def resumeSended(request, id):
+    resume = Resume.objects.get(resume_employee_id=id)
+    jobs = resume.job_set.all()
+    jobs_resumes = Jobs_Resumes.objects.filter(resume=resume, isEmploy=True)
+    return render(request, 'employee/resume_send.html', locals())
+
+def resumeReceive(request, id, jid, rid):
+    enterprise = Enterprise.objects.get(id=id)
+    job = Job.objects.get(id=jid)
+    resumes = job.job_resume.all()
+    jobs_resumes = Jobs_Resumes.objects.get(job_id=jid, resume_id=rid)
+    jobs_resumes.isEmploy = True
+    jobs_resumes.save()
+    return redirect(reverse('resumeReceived', args=(id,)))
+
+def resumeRefuse(request, id, jid, rid):
+    enterprise = Enterprise.objects.get(id=id)
+    job = Job.objects.get(id=jid)
+    resumes = job.job_resume.all()
+    jobs_resumes = Jobs_Resumes.objects.get(job_id=jid, resume_id=rid)
+    jobs_resumes.delete()
+    return redirect(reverse('resumeReceived', args=(id,)))
+
+def resumeReceived(request, id):
+    enterprise = Enterprise.objects.get(id=id)
+    jobs = Job.objects.filter(job_enterprise_id=id)
+    lists = []
+    for job in jobs:
+        resumes = job.job_resume.all()
+        for resume in resumes:
+            jobs_resumes = Jobs_Resumes.objects.get(job=job, resume=resume)
+            lists.append(jobs_resumes)
+    jobs_resumes_employed = Jobs_Resumes.objects.filter(job__in=jobs, isEmploy=True)
+    return render(request, 'enterprise/resume_receive.html', locals())
+

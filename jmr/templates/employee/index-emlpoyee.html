@@ -27,7 +27,7 @@
                     <li><a class="dr-icon dr-icon-user" href="{% url 'employeeUpdate' employee.id %}">用户信息管理</a></li>
                     <!--					<li><a class="dr-icon dr-icon-camera" href="#">视频</a></li>-->
                     <li><a class="dr-icon dr-icon-heart" href="{% url 'resumeUpdate' employee.id %}">简历信息管理</a></li>
-                    					<li><a class="dr-icon dr-icon-bullhorn" href="#">已发送简历</a></li>
+                    					<li><a class="dr-icon dr-icon-bullhorn" href="{% url 'resumeSended' employee.id %}">已发送简历</a></li>
 <!--                    					<li><a class="dr-icon dr-icon-download" href="#">下载</a></li>-->
 <!--                    <li><a class="dr-icon dr-icon-settings" href="#">进行简历匹配</a></li>-->
                     <li><a class="dr-icon dr-icon-switch" href="#">退出</a></li>
@@ -43,6 +43,7 @@
                 <th>Major:</th>
                 <th>Degree:</th>
                 <th>Detail:</th>
+                <th>Action:</th>
                 </td>
                 {% for job in jobs %}
                     <tr>
@@ -52,6 +53,7 @@
                         <th>{{ job.job_major }}</th>
                         <th>{{ job.job_degree }}</th>
                         <th><a href="{% url 'jobDetail' job.id %}" >Detail</a></th>
+                        <th><a href="{% url 'resumeSend' employee.id job.id %}" >Send</a></th>
                     </tr>
                 {% endfor %}
             </table>
@@ -64,6 +66,7 @@
                 <th>Major:</th>
                 <th>Degree:</th>
                 <th>Detail:</th>
+                <th>Action:</th>
                 </td>
                 {% for job in recommendedJobs %}
                     <tr>
@@ -73,6 +76,7 @@
                         <th>{{ job.job_major }}</th>
                         <th>{{ job.job_degree }}</th>
                         <th><a href="{% url 'jobDetail' job.id %}" >Detail</a></th>
+                        <th><a href="{% url 'resumeSend' employee.id job.id %}" >Send</a></th>
                     </tr>
                 {% endfor %}
             </table>

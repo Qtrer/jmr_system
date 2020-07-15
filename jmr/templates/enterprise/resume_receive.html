@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>已接收简历</title>
+</head>
+<body>
+<h3>已接收</h3>
+<table>
+    <td>
+    <th>Job</th>
+    <th>Employee</th>
+    <th>Action</th>
+    <th></th>
+    </td>
+    {% for list in lists %}
+        <tr>
+            <th></th>
+            <th><a href="{% url 'jobDetail' list.job.id %}">{{ list.job }}</a></th>
+            <th><a href="{% url 'resumeDetail' list.resume.id %}">{{ list.resume }}</a></th>
+            <th><a href="{% url 'resumeReceive' enterprise.id list.job.id list.resume.id %}">Employ</a></th>
+            <th><a href="{% url 'resumeRefuse' enterprise.id list.job.id list.resume.id %}">Refuse</a></th>
+        </tr>
+    {% endfor %}
+</table>
+<h3>已雇用</h3>
+<table>
+    <td>
+    <th>Job</th>
+    <th>Employee</th>
+    </td>
+    {% for jr in jobs_resumes_employed %}
+        <tr>
+            <th></th>
+            <th><a href="{% url 'jobDetail' jr.job.id %}">{{ jr.job }}</a></th>
+            <th><a href="{% url 'resumeDetail' jr.resume.id %}">{{ jr.resume }}</a></th>
+        </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{% url 'enterpriseIndex' enterprise.id %}">Return</a>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>已发送简历</title>
+</head>
+<body>
+<h3>已发送</h3>
+<table>
+    <td>
+    <th>Name:</th>
+    <th>Salary:</th>
+    <th>Major:</th>
+    <th>Degree:</th>
+    <th>Detail:</th>
+    </td>
+    {% for job in jobs %}
+        <tr>
+            <th></th>
+            <th>{{ job.job_name }}</th>
+            <th>{{ job.job_salary }}</th>
+            <th>{{ job.job_major }}</th>
+            <th>{{ job.job_degree }}</th>
+            <th><a href="{% url 'jobDetail' job.id %}" >Detail</a></th>
+        </tr>
+    {% endfor %}
+</table>
+<h3>已雇用</h3>
+<table>
+    <td>
+    <th>Name:</th>
+    <th>Salary:</th>
+    <th>Major:</th>
+    <th>Degree:</th>
+    <th>Detail:</th>
+    </td>
+    {% for jr in jobs_resumes %}
+        <tr>
+            <th></th>
+            <th>{{ jr.job.job_name }}</th>
+            <th>{{ jr.job.job_salary }}</th>
+            <th>{{ jr.job.job_major }}</th>
+            <th>{{ jr.job.job_degree }}</th>
+            <th><a href="{% url 'jobDetail' jr.job_id %}" >Detail</a></th>
+        </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{% url 'employeeIndex' resume.resume_employee_id %}">Return</a>
+</body>
+</html>

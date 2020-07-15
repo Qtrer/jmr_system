@@ -45,6 +45,6 @@ class ResumeForm(forms.Form):
                                        ("safety", '计算机安全')))
     resume_address = forms.CharField(label='住址', max_length=120)
     resume_degree = forms.ChoiceField(label='教育程度',
-                                       choices=(('seniorHighSchool', '高中'), ('college', '本科'), ('postgraduate', '研究生'),
-                                                ('doctor', '博士生')))
+                                       choices=(('1', '高中'), ('2', '本科'), ('3', '研究生'),
+                                                ('4', '博士生')))
     resume_info = forms.CharField(label='更多', max_length=200)
